@@ -41,6 +41,7 @@
 
 #define HTTP_VERSION        "HTTP/1.1"
 
+//static const char * index_file = "/ramdisk/index.html";
 static const char * index_file = "index.html";
 static const char * rfc1123_format = "%a, %d %b %Y %H:%M:%S GMT";
 
@@ -55,6 +56,7 @@ static int sanitizefile(const char *buf);
 static int sanitizehost(char *buf);
 static int htaccess_check(struct connstruct *cn);
 static const char *getmimetype(const char *name);
+int issend = 1;
 
 #if defined(CONFIG_HTTP_DIRECTORIES)
 static void urlencode(const uint8_t *s, char *t);
@@ -475,7 +477,6 @@ void procsendhead(struct connstruct *cn)
         flags |= O_BINARY;
 #endif
         cn->filedesc = open(cn->actualfile, flags);
-
         if (cn->filedesc < 0) 
         {
             send_error(cn, 404);
@@ -493,8 +494,10 @@ void procsendhead(struct connstruct *cn)
             "Content-Type: %s\nContent-Length: %ld\n"
             "Date: %s\nLast-Modified: %s\nExpires: %s\n\n", server_version,
             getmimetype(cn->actualfile), (long) stbuf.st_size,
+            //getmimetype(cn->actualfile),
             date, last_modified, expires); 
         special_write(cn, buf, strlen(buf));
+	//issend = 1;
 
 #ifdef CONFIG_HTTP_VERBOSE
         //printf("axhttpd: %s:/%s\n", cn->is_ssl ? "https" : "http", cn->filereq);
@@ -522,10 +525,15 @@ void procsendhead(struct connstruct *cn)
 void procreadfile(struct connstruct *cn) 
 {
     int rv = read(cn->filedesc, cn->databuf, BLOCKSIZE);
+    /*if (rv == 0 && issend) {
+         rv = 10;
+         memset(cn->databuf, '$', rv);
+         issend = 0;
+     }*/
 
     if (rv <= 0) 
     {
-        close(cn->filedesc);
+	close(cn->filedesc);
         cn->filedesc = -1;
         if (cn->close_when_done)        /* close immediately */
             removeconnection(cn);

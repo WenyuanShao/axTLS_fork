@@ -170,7 +170,7 @@ int RSA_decrypt(const RSA_CTX *ctx, const uint8_t *in_data,
 #endif
 	long int t = 1000000*(end.tv_sec - start.tv_sec) + (end.tv_usec - start.tv_usec);
 
-	printf("(%ld)", t);
+	//printf("(%ld)", t);
 
     /* convert to a normal block */
     bi_export(ctx->bi_ctx, decrypted_bi, block, byte_size);

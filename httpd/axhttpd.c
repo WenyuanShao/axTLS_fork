@@ -394,7 +394,6 @@ int main(int argc, char *argv[])
 #endif
             tp = tp->next;
         }
-
         active = select(wnum > rnum ? wnum+1 : rnum+1,
                 rnum != -1 ? &rfds : NULL, 
                 wnum != -1 ? &wfds : NULL,
