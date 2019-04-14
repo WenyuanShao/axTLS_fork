@@ -68,18 +68,18 @@
 /*
  * CGI
  */
-#define CONFIG_HTTP_HAS_CGI 1
-#define CONFIG_HTTP_CGI_EXTENSIONS ".lua,.lp,.php"
-#define CONFIG_HTTP_ENABLE_LUA 1
-#define CONFIG_HTTP_LUA_PREFIX "/usr"
+/* #define CONFIG_HTTP_HAS_CGI 1 */
+/* #define CONFIG_HTTP_CGI_EXTENSIONS ".lua,.lp,.php" */
+/* #define CONFIG_HTTP_ENABLE_LUA 1 */
+/* #define CONFIG_HTTP_LUA_PREFIX "/usr" */
 #undef CONFIG_HTTP_BUILD_LUA
-#define CONFIG_HTTP_CGI_LAUNCHER "/usr/bin/cgi"
-#define CONFIG_HTTP_DIRECTORIES 1
-#define CONFIG_HTTP_HAS_AUTHORIZATION 1
+/* #define CONFIG_HTTP_CGI_LAUNCHER "/usr/bin/cgi" */
+/* #define CONFIG_HTTP_DIRECTORIES 1 */
+/* #define CONFIG_HTTP_HAS_AUTHORIZATION 1 */
 #undef CONFIG_HTTP_HAS_IPV6
 #undef CONFIG_HTTP_ENABLE_DIFFERENT_USER
-#define CONFIG_HTTP_USER ""
-#define CONFIG_HTTP_VERBOSE 1
+/* #define CONFIG_HTTP_USER "" */
+/* #define CONFIG_HTTP_VERBOSE 1 */
 #undef CONFIG_HTTP_IS_DAEMON
 
 /*
