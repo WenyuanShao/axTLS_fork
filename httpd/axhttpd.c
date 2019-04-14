@@ -35,6 +35,7 @@
 #include <stdlib.h>
 #include <sys/stat.h>
 #include <sys/time.h>
+#include <netinet/tcp.h>
 
 #if !defined(WIN32)
 #include <pwd.h>
@@ -539,6 +540,8 @@ static void handlenewconnection(int listenfd, int is_ssl)
     else 
         *ipbuf = '\0';
 
+    int i = 1;
+    setsockopt(connfd, IPPROTO_TCP, TCP_NODELAY, (void *)&i, sizeof(i));
     if (connfd != -1) /* check for error condition */
         addconnection(connfd, ipbuf, is_ssl);
 }
@@ -549,6 +552,8 @@ static void handlenewconnection(int listenfd, int is_ssl)
     struct sockaddr_in their_addr;
     socklen_t tp = sizeof(struct sockaddr_in);
     int connfd = accept(listenfd, (struct sockaddr *)&their_addr, &tp);
+    int i = 1;
+    setsockopt(connfd, IPPROTO_TCP, TCP_NODELAY, (void *)&i, sizeof(i));
     addconnection(connfd, inet_ntoa(their_addr.sin_addr), is_ssl);
 }
 #endif
