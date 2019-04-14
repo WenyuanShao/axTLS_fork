@@ -493,11 +493,11 @@ void procsendhead(struct connstruct *cn)
 			"Connection: Keep-Alive\n"
             "Content-Type: %s\nContent-Length: %ld\n"
             "Date: %s\nLast-Modified: %s\nExpires: %s\n\n", server_version,
-            getmimetype(cn->actualfile), (long) stbuf.st_size,
-            //getmimetype(cn->actualfile),
+	    //getmimetype(cn->actualfile), (long) stbuf.st_size,
+	    getmimetype(cn->actualfile), (long)DUMMY_FILE_LEN,
             date, last_modified, expires); 
         special_write(cn, buf, strlen(buf));
-	//issend = 1;
+	issend = 1;
 
 #ifdef CONFIG_HTTP_VERBOSE
         //printf("axhttpd: %s:/%s\n", cn->is_ssl ? "https" : "http", cn->filereq);
@@ -525,11 +525,11 @@ void procsendhead(struct connstruct *cn)
 void procreadfile(struct connstruct *cn) 
 {
     int rv = read(cn->filedesc, cn->databuf, BLOCKSIZE);
-    /*if (rv == 0 && issend) {
-         rv = 10;
+    if (rv == 0 && issend) {
+         rv = DUMMY_FILE_LEN;
          memset(cn->databuf, '$', rv);
          issend = 0;
-     }*/
+     }
 
     if (rv <= 0) 
     {
