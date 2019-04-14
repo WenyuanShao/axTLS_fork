@@ -117,6 +117,16 @@ static void die(int sigtype)
 }
 #endif
 
+static inline uint64_t
+ps_tsc(void)
+{
+  unsigned long a, d, c;
+
+  __asm__ __volatile__("rdtsc" : "=a" (a), "=d" (d), "=c" (c) : : );
+
+  return ((uint64_t)d << 32) | (uint64_t)a;
+}
+
 int main(int argc, char *argv[]) 
 {
     fd_set rfds, wfds;
@@ -134,6 +144,7 @@ int main(int argc, char *argv[])
     char *portStr;
     char *private_key = NULL;
     char *cert = NULL;
+    uint64_t temp_s, temp_e;
 
 #ifdef WIN32
     WORD wVersionRequested = MAKEWORD(2, 2);
@@ -394,10 +405,15 @@ int main(int argc, char *argv[])
 #endif
             tp = tp->next;
         }
+	/* temp_s = ps_tsc(); */
         active = select(wnum > rnum ? wnum+1 : rnum+1,
                 rnum != -1 ? &rfds : NULL, 
                 wnum != -1 ? &wfds : NULL,
                 NULL, usedconns ? &tv : NULL);
+	/* tp = usedconns; */
+	/* temp_e = ps_tsc(); */
+	/* if (tp == NULL) printf("dbg s %lu e %lu diff %lu\n", temp_s, temp_e, temp_e - temp_s); */
+	/* else printf("dbg s %lu e %lu diff %lu state %d wn %d rn %d\n", temp_s, temp_e, temp_e - temp_s, tp->state, wnum, rnum); */
         /* timeout? */
         if (active == 0)
             continue;
