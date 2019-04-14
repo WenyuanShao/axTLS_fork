@@ -47,6 +47,7 @@ struct connstruct *usedconns;
 struct connstruct *freeconns;
 const char * const server_version = "axhttpd/"AXTLS_VERSION;
 static const char *webroot = CONFIG_HTTP_WEBROOT;
+int file_length = 0;
 
 static void addtoservers(int sd);
 static int openlistener(char *address, int port);
@@ -214,6 +215,13 @@ int main(int argc, char *argv[])
             continue;
         }
 
+        if (strcmp(argv[i], "-l") == 0 && argv[i+1] != NULL)
+        {
+	    file_length = atoi(argv[i+1]);
+            i += 2;
+            continue;
+        }
+
         if (strcmp(argv[i], "-key") == 0 && argv[i+1] != NULL)
         {
             private_key = argv[i+1];
@@ -225,6 +233,7 @@ int main(int argc, char *argv[])
                "    [-s [address:]httpsport]\n"
                "    [-key private_key]\n"
                "    [-cert cert]\n"
+               "    [-l file length]\n"
                "    [-w webroot]\n", argv[0]);
         exit(1);
     }

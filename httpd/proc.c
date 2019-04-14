@@ -40,7 +40,9 @@
 #include <sys/time.h>
 
 #define HTTP_VERSION        "HTTP/1.1"
+#define DUMMY_FILE_LEN      (file_length)
 
+extern int file_length;
 //static const char * index_file = "/ramdisk/index.html";
 static const char * index_file = "index.html";
 static const char * rfc1123_format = "%a, %d %b %Y %H:%M:%S GMT";
