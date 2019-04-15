@@ -491,13 +491,16 @@ void procsendhead(struct connstruct *cn)
         ptm = gmtime(&t_time);
         strftime(expires, sizeof(expires), rfc1123_format, ptm);
 
-        snprintf(buf, sizeof(buf), HTTP_VERSION" 200 OK\nServer: %s\n"
-			"Connection: Keep-Alive\n"
-            "Content-Type: %s\nContent-Length: %ld\n"
-            "Date: %s\nLast-Modified: %s\nExpires: %s\n\n", server_version,
-	    //getmimetype(cn->actualfile), (long) stbuf.st_size,
-	    getmimetype(cn->actualfile), (long)DUMMY_FILE_LEN,
-            date, last_modified, expires); 
+        snprintf(buf, sizeof(buf), HTTP_VERSION" 200 OK\n"
+		 "Content-Length: %ld\n\n",
+	    (long)DUMMY_FILE_LEN); 
+        /* snprintf(buf, sizeof(buf), HTTP_VERSION" 200 OK\nServer: %s\n" */
+	/* 		"Connection: Keep-Alive\n" */
+        /*     "Content-Type: %s\nContent-Length: %ld\n" */
+        /*     "Date: %s\nLast-Modified: %s\nExpires: %s\n\n", server_version, */
+	/*     //getmimetype(cn->actualfile), (long) stbuf.st_size, */
+	/*     getmimetype(cn->actualfile), (long)DUMMY_FILE_LEN, */
+        /*     date, last_modified, expires);  */
         special_write(cn, buf, strlen(buf));
 	issend = 1;
 
